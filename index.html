@@ -5,20 +5,20 @@
     <head>
 
         <meta charset="UTF-8" />        
-
+        <!-- Sizes site based on viewport width and height -->
         <meta name="viewport" content="width= device-width, initial-scale=1.0" />
-
+        <!-- Server  -->
         <meta http-equiv="X-UA-Compatible" content="ie-edge" />
-
+        <!-- Linking CSS stylesheet -->
         <link rel="stylesheet" href="./styles.css" />
-
+        <!--Favicon image of a heart-->
         <link rel="icon" href= "" />
-
+        <!-- Title -->
         <title>Weather Board</title>
     </head>
 
     <body>
-
+        <!-- Header title -->
         <header>
             <h1>Lets discover the weather together!</h1>
         </header>
@@ -27,13 +27,15 @@
 
         <main>
 
+            <!-- Main search form and button -->
             <div>
                 <form>
                     <label for=""cityName>Search your city!</label>
-                 <input type="text" name="cityName" placeholder="City name (in USA)"/>
+                    <input type="text" name="cityName" placeholder="City name (in USA)"/>
                 </form>
             </div>
 
+            <!-- Div container for main content and weather content -->
             <div>
                 <div id="mainCont"></div>
                 <div id="weather"></div>
@@ -46,6 +48,7 @@
 
             
         </footer>
+        <!-- Linking Javascript file -->
         <script src="./script.js"></script>
 
     </body>

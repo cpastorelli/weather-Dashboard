@@ -1,0 +1,15 @@
+
+body {
+    background-color: linear-gradient(blue, gray) ;
+
+}
+
+card1 {
+    width: 30vw;
+    height: 20vh;
+}
+
+card2 {
+    width: 50vw;
+    height: 50vh;
+}

@@ -119,30 +119,31 @@ function getWeather(city){
     })
 }
 
+
 function showHistory(){
+  
+for (var i = 0; i < pastSearches.length; i++){
     
-  for (var i = 0; i < pastSearches.length; i++){
-      
-      const pastCities = pastSearches[i];
-      var newBtn = document.createElement("button");
+    const pastCities = pastSearches[i];
+    var newBtn = document.createElement("button");
 
-      newBtn.textContent = pastCities;
-      newBtn.setAttribute("dataVals", pastCities);
-     
-      newBtn.addEventListener("click", function () {
-          console.log("I am in the EventListener function within showHistory");
-          var searchCity = this.getAttribute("dataVals");
-          getWeather(searchCity);
-        });
+    newBtn.textContent = pastCities;
+    newBtn.setAttribute("dataVals", pastCities);
+   
+    newBtn.addEventListener("submit", function () {
+        console.log("I am in the EventListener function within showHistory");
+        var searchCity = this.getAttribute("dataVals");
+        getWeather(searchCity);
+      });
 
-        prvCityCont.append(newBtn);
-  }
-
-  console.log(pastSearches);
-  localStorage.setItem("previousSearches", JSON.stringify(pastSearches));
+      prvCityCont.appendChild(newBtn);
 }
 
-formInput.addEventListener("click", function(e) {
+console.log(pastSearches);
+localStorage.setItem("previousSearches", JSON.stringify(pastSearches));
+}
+
+formInput.addEventListener("submit", function(e) {
     e.preventDefault();
     
     var srchVal = inputEl.value.trim();

@@ -23,37 +23,31 @@
 
     <body>
         <!-- Header title -->
-        <header>
-            <h1>Lets discover the weather together!</h1>
+        <header class="text-center ">
+            <h1 class="card-title">Lets discover the weather together!</h1>
         </header>
 
         <hr />
 
-        <main>
+        <main class="text-center">
 
             <!-- Main search form and button -->
             <div>
-                <form>
-                    <label for="cityName" class="formLabel">Search your city!</label>
+                <form >
+                    <label for="cityName" class="formLabel"><h5>Search your city!</h5></label>
                     <input type="text" name="cityName" placeholder="City name (in USA)"/>
-                    <button type="submit" id ="searchBtn" class="">Show me the Weather!</button>
+                    <button type="submit" id ="searchBtn" class="btn btn-primary">Show me the Weather!</button>
                 </form>
                 <div id="#prev-City"> </div>
             </div>
 
             <!-- Div container for main content and weather content -->
-            <div>
-                <div id="mainCont"  class="card card1"></div>
-                <div id="weather"  class="card card2"></div>
+            <div id="hideme"class="visually-hidden bg-secondary bg-opacity-25">
+                <div id="mainCont"  class="container-fluid w-75 p-3 "> </div>
+                <div id="weather"  class="container-fluid w-50 p-3 "> </div>
             </div>
         </main>
 
-        <hr />
-
-        <footer>
-
-            
-        </footer>
         <!-- Linking Javascript file -->
         <script src="./script.js"></script>
     </body>

@@ -39,7 +39,7 @@ function getWeather(city){
         .then(function (wData) {
           
             var cityName = document.createElement("h2");
-            cityName.className = "card-title .bg-secondary.bg-gradient";
+            cityName.className = "card-header bg-secondary bg-gradient ";
             cityName.textContent = city.toUpperCase() + " "+  moment.unix(wData.current.sunrise).format("DD/MM/YYYY");
             
             var iWeather = document.createElement("img");
@@ -53,8 +53,8 @@ function getWeather(city){
             weatherNode.className = "list-group";
 
             var temperature = document.createElement("li");
-            temperature.textContent = "temperature: " + wData.current.temp + " F";
-            temperature.className = "list-group-item";   
+            temperature.textContent = "temperature: " + wData.current.temp + "\u00B0F";
+            temperature.className = "list-group-item rounded";   
             weatherNode.append(temperature);
 
             var wind = document.createElement("li");
@@ -65,19 +65,19 @@ function getWeather(city){
           
             var humidity = document.createElement("li");
             humidity.textContent = "Humidty: " + wData.current.humidity + "%";
-            humidity.className = "list-group-item";   
+            humidity.className = "list-group-item rounded";   
             weatherNode.append(humidity);
 
           
             var uvIndex = document.createElement("li");
             uvIndex.textContent = "UV index: " + wData.current.uvi;
-            uvIndex.className = "list-group-item";   
+            uvIndex.className = "list-group-item rounded";   
             weatherNode.append(uvIndex);
 
             mainCont.append(weatherNode); 
 
             var wTitle = document.createElement("h2");
-            wTitle.textContent = "Weather Forcast for the next 5 days:";
+            wTitle.textContent = "Weather Forecast for the next 5 days:";
             wTitle.className = "card-title";
 
             weather.append(wTitle);
@@ -85,27 +85,30 @@ function getWeather(city){
             for(var i = 0; i < wData.daily.length; i ++){
                 var dayX = wData.daily[i];
                 var dayXList = document.createElement("ul");
-                dayXList.className = "card-body"
-                var date = moment(dayX.sunrise).format("DD-MM-YYYY");
+                dayXList.className = "card-body bg-info bg-gradient bg-opacity-50 border border-dark"
+                var date = moment.unix(dayX.sunrise).format("DD-MM-YYYY");
+              
+
                 dayXList.append(date);
 
                 var icon = document.createElement("img");
                 icon.setAttribute("src", rootURL + "/img/w/" + dayX.weather[0].icon + ".png");
+                //icon.className = "card-img-top";
                 dayXList.append(icon);
 
                 var temperature = document.createElement("li");
-                temperature.textContent = dayX.temp.day + " F";
-                temperature.className = "list-group-item";
+                temperature.textContent = "Temperature: "+ dayX.temp.day + "\u00B0F";
+                temperature.className = "list-group-item rounded";
                 dayXList.append(temperature);
 
                 var wind = document.createElement("li");        
                 wind.textContent = "Wind: " + dayX.wind_speed +" MPH";  
-                wind.className = "list-group-item";   
+                wind.className = "list-group-item rounded";   
                 dayXList.append(wind);
 
                 var humidity = document.createElement("li");   
-                humidity.textContent = dayX.humidity;     
-                humidity.className = "list-group-item";
+                humidity.textContent ="Humidity: " + dayX.humidity + "%";     
+                humidity.className = "list-group-item rounded";
                 dayXList.append(humidity);
  
                 weather.append(dayXList);
@@ -121,12 +124,11 @@ function showHistory(){
   for (var i = 0; i < pastSearches.length; i++){
       
       const pastCities = pastSearches[i];
-      console.log(pastCities);
       var newBtn = document.createElement("button");
 
       newBtn.textContent = pastCities;
       newBtn.setAttribute("dataVals", pastCities);
-      console.log(newBtn.textContent);
+     
       newBtn.addEventListener("click", function () {
           console.log("I am in the EventListener function within showHistory");
           var searchCity = this.getAttribute("dataVals");
@@ -148,6 +150,8 @@ formInput.addEventListener("click", function(e) {
     if (!srchVal) {
       return;
     }
+
+    document.getElementById("hideme").classList.remove("visually-hidden");
   
     pastSearches.push(srchVal);
     getWeather(srchVal);

@@ -20,7 +20,7 @@ function getWeather(city){
     mainCont.innerHTML = "";
     weather.innerHTML = "";
 
-    var cityURL ="http://api.openweathermap.org/geo/1.0/direct?q=" + city + ",US&limit=5&appid=" + apiKey;
+    var cityURL ="https://api.openweathermap.org/geo/1.0/direct?q=" + city + ",US&limit=5&appid=" + apiKey;
 
   fetch(cityURL)
     .then(function (response) {

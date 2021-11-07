@@ -1,193 +1,205 @@
 // variables
-var inputEl = document.querySelector('input[name="cityName"]');
-var btnSearch = document.querySelector("#btnSearch");
-var prvCityCont = document.querySelector("#prev-City");
-var mainCont = document.querySelector("#mainCont");
-var weather = document.querySelector("#weather");
-var formInput = document.querySelector("form");
-var pastSearches = [];
+const inputEl = document.querySelector('input[name="cityName"]');
+const btnSearch = document.querySelector("#btnSearch");
+const pastBtn = document.querySelector(".cityLookup");
+const prvCityCont = document.querySelector("#prev-City");
+const mainCont = document.querySelector("#mainCont");
+const weather = document.querySelector("#weather");
+const formInput = document.querySelector("form");
 
-var apiKey = "966a86c8bd69d14a621d45a4cd70fed2";
-var rootURL = "https://api.openweathermap.org/";
+const pastSearches = [];
+const apiKey = "966a86c8bd69d14a621d45a4cd70fed2";
+const rootURL = "https://api.openweathermap.org/";
+const countryCode = "US";
+
+// const liClass = "list-group-item rounded";
+// const tArray1 = ["Temp: ", today.current.temp, "\u00B0F"];
+// const tArray2 = ["Temp: ", today.temp.day, "\u00B0F"];
+// const wArray1 = ["Wind: ", today.current.wind_speed, "MPH"];
+// const wArray2 = ["Wind: ", today.wind_speed, "MPH"];
+// const hArray1 = ["Humidity: ", today.current.humidity, "%"];
+// const hArray2 = ["Humidity: ", today.humidity, "%"];
+// const uvArray = ["UV Index: ", today.current.uvi, " "];
 
 
-// Main function Should be able to break it down 
-function getWeather(city){
-    mainCont.innerHTML = "";
-    weather.innerHTML = "";
+// Begin Program
+startSearch();
 
-    // Set up values for OpenWeather API Geolocation
-    var cityURL ="https://api.openweathermap.org/geo/1.0/direct?q=" + city + ",US&limit=5&appid=" + apiKey;
+// Looks for past searches in localStorage
+function startSearch(){
+  let pastHistory = localStorage.getItem("previousSearches");
 
-  // API fetch of data from OpenWeatherMap-Geolocation
-  fetch(cityURL)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      var citydata = data[0];
-      console.log(citydata);
-
-      //set up values for weather API OneCall 
-      var weatherURL ="https://api.openweathermap.org/data/2.5/onecall?lat=" + citydata.lat + "&lon=" + citydata.lon + "&exclude=minutely,hourly&units=imperial&appid=" + apiKey;
-
-      // API fetch of data from OpenWeatherMap-OneCall
-      fetch(weatherURL)
-        .then(function (response) {
-          return response.json();
-        })
-        
-        .then(function (wData) {
-            // Create H2 element and save name & current time
-            var cityName = document.createElement("h2");
-            cityName.className = "card-header bg-secondary bg-gradient ";
-            cityName.textContent = city.toUpperCase() + " "+  moment.unix(wData.current.sunrise).format("DD/MM/YYYY");
-            // get icon from API and save to variable
-            var iWeather = document.createElement("img");
-            iWeather.setAttribute("src", "https://openweathermap.org/img/w/" + wData.current.weather[0].icon + ".png");
-            
-            // append icon to cityName, then append cityName to main container
-            cityName.append(iWeather);
-            mainCont.append(cityName);
-
-          
-            // create ul item to hold data
-            var weatherNode = document.createElement("ul");
-            weatherNode.className = "list-group";
-            
-            //create list item and save as temperature, append to ul element
-            var temperature = document.createElement("li");
-            temperature.textContent = "temperature: " + wData.current.temp + "\u00B0F";
-            temperature.className = "list-group-item rounded";   
-            weatherNode.append(temperature);
-
-            //create list item and save as wind, append to ul element
-            var wind = document.createElement("li");
-            wind.textContent = "Wind speed: " + wData.current.wind_speed + " mph";
-            wind.className = "list-group-item";   
-            weatherNode.append(wind);
-
-            //create list item and save as humidity, append to ul element
-            var humidity = document.createElement("li");
-            humidity.textContent = "Humidty: " + wData.current.humidity + "%";
-            humidity.className = "list-group-item rounded";   
-            weatherNode.append(humidity);
-
-            //create list item and save as uvIndex, append to ul element
-            var uvIndex = document.createElement("li");
-            uvIndex.textContent = "UV index: " + wData.current.uvi;
-            uvIndex.className = "list-group-item rounded";   
-            weatherNode.append(uvIndex);
-
-            // append entire ul element to main container
-            mainCont.append(weatherNode); 
-            
-            // Create New title for another section
-            var wTitle = document.createElement("h2");
-            wTitle.textContent = "Weather Forecast for the next 5 days:";
-            wTitle.className = "card-title";
-
-            // append title to weather container
-            weather.append(wTitle);
-
-            // loop through 5 day length and gather all the information needed
-            for(var i = 0; i < wData.daily.length; i ++){
-                // for this day[i], create a ul element and give it a day
-                var dayX = wData.daily[i];
-                var dayXList = document.createElement("ul");
-                dayXList.className = "card-body bg-info bg-gradient bg-opacity-50 border border-dark"
-                
-                // make date, and append to il element
-                var date = moment.unix(dayX.sunrise).format("DD-MM-YYYY");
-                dayXList.append(date);
-
-                // create icon and set attributes, append to ul element
-                var icon = document.createElement("img");
-                icon.setAttribute("src", rootURL + "/img/w/" + dayX.weather[0].icon + ".png");
-                dayXList.append(icon);
-
-                //create list item and save as temperature, append to ul element
-                var temperature = document.createElement("li");
-                temperature.textContent = "Temperature: "+ dayX.temp.day + "\u00B0F";
-                temperature.className = "list-group-item rounded";
-                dayXList.append(temperature);
-
-                //create list item and save as wind, append to ul element
-                var wind = document.createElement("li");        
-                wind.textContent = "Wind: " + dayX.wind_speed +" MPH";  
-                wind.className = "list-group-item rounded";   
-                dayXList.append(wind);
-
-                //create list item and save as humidity, append to ul element
-                var humidity = document.createElement("li");   
-                humidity.textContent ="Humidity: " + dayX.humidity + "%";     
-                humidity.className = "list-group-item rounded";
-                dayXList.append(humidity);
-
-                //append ul element to weather container
-                weather.append(dayXList);
-            }
-        
-        });
-
-    })
+  if(pastHistory) { 
+    previousSearches = JSON.parse(pastHistory);
+    makeBtn(previousSearches);    
+    showHistory(); 
+  } 
 }
 
-// goes through past history and creates buttons
-function showHistory(){
-  
-  // go through list of past searches and create buttons for them
-  for (var i = 0; i < pastSearches.length; i++){
-    
-    const pastCities = pastSearches[i];
-    var newBtn = document.createElement("button");
+// Creates button for city searches
+function makeBtn(city){
+  let newBtn = document.createElement("button");
+  newBtn.className = "cityLookup";
+  newBtn.textContent = city;
+  prvCityCont.appendChild(newBtn);
 
+  newBtn.addEventListener("click", function () {
+    document.getElementById("hideme").classList.remove("visually-hidden"); 
+    getWeather(city);
+  });
+
+  localStorage.setItem("previousSearches", JSON.stringify(city));
+}
+
+// loops through previous searches and creates buttons for searches
+function showHistory(){
+
+  for (let i = 0; i < pastSearches.length; i++){
+    const pastCities = pastSearches[i];
+    let newBtn = document.createElement("button");
     newBtn.textContent = pastCities;
     newBtn.setAttribute("dataVals", pastCities);
    
     newBtn.addEventListener("submit", function () {
-        console.log("I am in the EventListener function within showHistory");
-        var searchCity = this.getAttribute("dataVals");
+        let searchCity = this.getAttribute("dataVals");
         getWeather(searchCity);
       });
 
       prvCityCont.appendChild(newBtn);
+  }
 }
 
-console.log(pastSearches);
-localStorage.setItem("previousSearches", JSON.stringify(pastSearches));
-}
-
-// Event handler for click event
-// checks if input is made
-// calls getWeather function and showHistory function
 formInput.addEventListener("submit", function(e) {
-    e.preventDefault();
+  e.preventDefault();
+  let srchVal = inputEl.value.trim(); 
+
+  if (!srchVal) {
+    return;
+  }  
+
+  document.getElementById("hideme").classList.remove("visually-hidden"); 
+  pastSearches.push(srchVal); 
+  getWeather(srchVal);
+  makeBtn(srchVal);
+});
+
+function getWeather(city){
     
-    var srchVal = inputEl.value.trim();
+  mainCont.innerHTML = "";  
+  weather.innerHTML = "";
+  let cityURL ="https://api.openweathermap.org/geo/1.0/direct?q=" + city + ",US&limit=5&appid=" + apiKey;
   
-    if (!srchVal) {
-      return;
-    }
-
-    // document.getElementById("hideme").classList.remove("visually-hidden");
-    pastSearches.push(srchVal);
-    getWeather(srchVal);
-    showHistory();
-  });
-
-// Looks for any past searches in local storage and parses them variable
-//  function calls showHistory
-function startSearch(){
+  fetch(cityURL)
     
-    var pastHistory = localStorage.getItem("previousSearches");
+  .then(function (response) { 
+    return response.json();
+  })
 
-    if(pastHistory) {
-        console.log("There were previous searches made");
-        previousSearches = JSON.parse(pastHistory);
-        showHistory();
-    } 
+  .then(function (data) {
+    let citydata = data[0];
+    let weatherURL ="https://api.openweathermap.org/data/2.5/onecall?lat=" + citydata.lat + "&lon=" + citydata.lon + "&exclude=minutely,hourly&units=imperial&appid=" + apiKey;
+      
+    forecastToday(weatherURL, city);
+    localStorage.getItem("previousSearches", JSON.stringify(pastSearches));
+  })
+
+  
 }
 
-// function call sto begin program
-startSearch();
+function forecastToday(weatherURL, city){
+  fetch(weatherURL)
+  .then(function (response) {
+    return response.json();
+  })
+  
+  .then(function(wData) {
+    
+    let cityName = document.createElement("h2");
+    cityName.className = "card-header bg-secondary bg-gradient ";
+    cityName.textContent = city.toUpperCase() + " "+  moment.unix(wData.current.sunrise).format("DD/MM/YYYY");
+      
+    let iWeather = document.createElement("img");
+    iWeather.setAttribute("src", "https://openweathermap.org/img/w/" + wData.current.weather[0].icon + ".png");
+      
+    cityName.append(iWeather);
+    mainCont.append(cityName);
+    
+    let weatherNode = document.createElement("ul");
+    weatherNode.className = "list-group";
+   //let newLi = createList(wData, liClass, tArray);
+   //  weatherNode.append(newLi);
+    let temperature = document.createElement("li");
+    temperature.textContent = "temperature: " + wData.current.temp + "\u00B0F";
+    temperature.className = "list-group-item rounded";   
+    weatherNode.append(temperature);
+   //let newLi = createList(wData, liClass, wArray);
+   //  weatherNode.append(newLi);
+    let wind = document.createElement("li");
+    wind.textContent = "Wind speed: " + wData.current.wind_speed + " mph";
+    wind.className = "list-group-item rounded";   
+    weatherNode.append(wind);
+   //let newLi = createList(wData, liClass, hArray);
+   //  weatherNode.append(newLi);
+    let humidity = document.createElement("li");
+    humidity.textContent = "Humidty: " + wData.current.humidity + "%";
+    humidity.className = "list-group-item rounded";   
+    weatherNode.append(humidity);
+   //let newLi = createList(wData, liClass, uvArray);
+   // weatherNode.append(newLi);
+    let uvIndex = document.createElement("li");
+    uvIndex.textContent = "UV index: " + wData.current.uvi;
+    uvIndex.className = "list-group-item rounded";   
+    weatherNode.append(uvIndex);
+
+    mainCont.append(weatherNode); 
+    forecast5Day(wData);
+  });
+}
+
+function forecast5Day(wData){
+  let wTitle = document.createElement("h2");
+  wTitle.textContent = "Weather Forecast for the next 5 days:";
+  wTitle.className = "card-title";
+  weather.append(wTitle);
+
+  for(let i = 0; i < wData.daily.length; i ++){
+    let dayX = wData.daily[i];
+    let dayXList = document.createElement("ul");
+    dayXList.className = "card-body bg-info bg-gradient bg-opacity-50 border border-dark"
+    
+    let date = moment.unix(dayX.sunrise).format("DD-MM-YYYY");
+  
+    dayXList.append(date);
+
+    let icon = document.createElement("img");
+    icon.setAttribute("src", rootURL + "/img/w/" + dayX.weather[0].icon + ".png");
+    dayXList.append(icon);
+   //let newLi = createList(dayX, liClass, tArray);
+   // dayxList.append(newLi);
+    let temperature = document.createElement("li");
+    temperature.textContent = "Temperature: "+ dayX.temp.day + "\u00B0F";
+    temperature.className = "list-group-item rounded";
+    dayXList.append(temperature);
+   //let newLi = createList(dayX, liClass, wArray);
+   // dayxList.append(newLi);
+    let wind = document.createElement("li");        
+    wind.textContent = "Wind: " + dayX.wind_speed +" MPH";  
+    wind.className = "list-group-item rounded";   
+    dayXList.append(wind);
+   //let newLi = createList(dayX, liClass, hArray);
+   // dayxList.append(newLi);
+    let humidity = document.createElement("li");   
+    humidity.textContent ="Humidity: " + dayX.humidity + "%";     
+    humidity.className = "list-group-item rounded";
+    dayXList.append(humidity);
+
+    weather.append(dayXList);
+  }
+}
+
+// function createList(thisDay, clName, thisArray){
+//   let today = thisDay;
+//   let listEl = document.createElement("li");   
+//   listEl.textContent = thisArray[0] + thisArray[1] + thisArray[2] ;     
+//   listEl.className = clName;
+// }

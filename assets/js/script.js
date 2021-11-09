@@ -7,7 +7,7 @@ const mainCont = document.querySelector("#mainCont");
 const weather = document.querySelector("#weather");
 const formInput = document.querySelector("form");
 
-const pastSearches = [];
+var pastSearches = [];
 const apiKey = "966a86c8bd69d14a621d45a4cd70fed2";
 const rootURL = "https://api.openweathermap.org/";
 const countryCode = "US";
@@ -27,12 +27,21 @@ startSearch();
 // Looks for past searches in localStorage
 function startSearch(){
   let pastHistory = localStorage.getItem("previousSearches");
-
+  console.log(pastHistory);
   if(pastHistory) { 
-    previousSearches = JSON.parse(pastHistory);
-    createBtn(previousSearches);    
-    showHistory(); 
+     let previousSearches = JSON.parse(pastHistory); 
+     console.log(previousSearches);
+     showHistory(previousSearches); 
   } 
+}
+
+// loops through previous searches and creates buttons for searches
+function showHistory(past){
+
+  for (let i = 0; i < past.length; i++){
+    let pastCities = past[i];
+    createBtn(pastCities);
+  }
 }
 
 // Creates button for city searches
@@ -44,28 +53,12 @@ function createBtn(city){
 
   newBtn.addEventListener("click", function () {
     document.getElementById("hideme").classList.remove("visually-hidden"); 
+
+    pastSearches.push(city); 
+    localStorage.setItem("previousSearches", JSON.stringify(pastSearches));
+    
     geolocationAPI(city);
   });
-
-  localStorage.setItem("previousSearches", JSON.stringify(city));
-}
-
-// loops through previous searches and creates buttons for searches
-function showHistory(){
-
-  for (let i = 0; i < pastSearches.length; i++){
-    const pastCities = pastSearches[i];
-    let newBtn = document.createElement("button");
-    newBtn.textContent = pastCities;
-    newBtn.setAttribute("dataVals", pastCities);
-   
-    newBtn.addEventListener("submit", function () {
-        let searchCity = this.getAttribute("dataVals");
-        geolocationAPI(searchCity);
-      });
-
-      pastEl.appendChild(newBtn);
-  }
 }
 
 formInput.addEventListener("submit", function(e) {
@@ -77,9 +70,13 @@ formInput.addEventListener("submit", function(e) {
   }  
 
   document.getElementById("hideme").classList.remove("visually-hidden"); 
+
   pastSearches.push(srchVal); 
-  geolocationAPI(srchVal);
+  localStorage.setItem("previousSearches", JSON.stringify(pastSearches));
+
   createBtn(srchVal);
+  geolocationAPI(srchVal);
+  
 });
 
 function geolocationAPI(city){
@@ -99,7 +96,7 @@ function geolocationAPI(city){
     let weatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + citydata.lat + "&lon=" + citydata.lon + "&exclude=minutely,hourly&units=imperial&appid=" + apiKey;
       
     weatherAPI(weatherURL, city);
-    localStorage.getItem("previousSearches", JSON.stringify(pastSearches));
+    // localStorage.getItem("previousSearches", JSON.stringify(pastSearches));
   })
 }
 
@@ -158,7 +155,7 @@ function forecast5Day(wData){
   wTitle.textContent = "Forecast for the week:";
   wTitle.className = "card-title";
   weather.append(wTitle);
-console.log(wData);
+ 
   for(let i = 1; i < wData.daily.length; i ++){
     let dayX = wData.daily[i];
     let dayXList = document.createElement("ul");

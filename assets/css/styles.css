@@ -1,21 +1,22 @@
+main {
+    background-color:rgb(167, 167, 167);
+    background-size: cover;
+    min-height:80vh;
+}
 
 header{
     background-image: url("../images/titleBackground.jpg");
     background-repeat: no-repeat;
     background-size: 100vw;
-    padding: 1.5%;
+    min-height: 20vh;
 }
+
 h5 {
     color:white;
 }
 
-.divCont {
-    background-color: rgb(172, 172, 172);
-}
-
-.cityBtns{
-    margin: 1%;
-    
+h2 {
+    width: 100%;
 }
 
 .weatherCont {
@@ -23,15 +24,18 @@ h5 {
     flex-wrap: wrap;
 }
 
-h2 {
-    width: 100%;
-}
-
 .cardItem {
-    flex: 4 4 15%;
+    flex: 1 1 15%;
     margin: 1%;  
 }
 
 .weatherCont li {
     left: -15px;
+}
+
+@media screen and (max-width: 31.15em){
+    
+    header{
+        background-size: 100vh;
+    }
 }

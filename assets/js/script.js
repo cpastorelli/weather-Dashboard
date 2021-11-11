@@ -27,10 +27,9 @@ startSearch();
 // Looks for past searches in localStorage
 function startSearch(){
   let pastHistory = localStorage.getItem("previousSearches");
-  console.log(pastHistory);
+  
   if(pastHistory) { 
      let previousSearches = JSON.parse(pastHistory); 
-     console.log(previousSearches);
      showHistory(previousSearches); 
   } 
 }
@@ -165,7 +164,7 @@ function forecast5Day(wData){
     let date = moment.unix(dayX.sunrise).format("DD-MM-YYYY");
   
     dayXCard.append(date);
-    console.log(dayX);
+
     let icon = document.createElement("img");
     icon.setAttribute("src", rootURL + "/img/w/" + dayX.weather[0].icon + ".png");
     icon.setAttribute("alt", dayX.weather[0].description);

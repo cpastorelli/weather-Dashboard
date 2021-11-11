@@ -1,15 +1,37 @@
 
-main {
-    /* background: url(noaa-weather.jpg); */
-
+header{
+    background-image: url("../images/titleBackground.jpg");
+    background-repeat: no-repeat;
+    background-size: 100vw;
+    padding: 1.5%;
+}
+h5 {
+    color:white;
 }
 
-card1 {
-    width: 30vw;
-    height: 20vh;
+.divCont {
+    background-color: rgb(172, 172, 172);
 }
 
-card2 {
-    width: 50vw;
-    height: 50vh;
+.cityBtns{
+    margin: 1%;
+    
+}
+
+.weatherCont {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+h2 {
+    width: 100%;
+}
+
+.cardItem {
+    flex: 4 4 15%;
+    margin: 1%;  
+}
+
+.weatherCont li {
+    left: -15px;
 }

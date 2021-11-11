@@ -3,8 +3,8 @@ const inputEl = document.querySelector('input[name="cityName"]');
 const btnSearch = document.querySelector("#btnSearch");
 const pastBtn = document.querySelector(".cityLookup");
 const pastEl = document.querySelector("#prev-City");
-const mainCont = document.querySelector("#mainCont");
-const weather = document.querySelector("#weather");
+const mainCont = document.querySelector(".mainCont");
+const weather = document.querySelector(".weatherCont");
 const formInput = document.querySelector("form");
 
 var pastSearches = [];
@@ -47,17 +47,18 @@ function showHistory(past){
 // Creates button for city searches
 function createBtn(city){
   let newBtn = document.createElement("button");
-  newBtn.className = "cityLookup";
+  newBtn.className = "cityLookup btn-info";
   newBtn.textContent = city;
   pastEl.appendChild(newBtn);
 
   newBtn.addEventListener("click", function () {
-    document.getElementById("hideme").classList.remove("visually-hidden"); 
+    
 
     pastSearches.push(city); 
     localStorage.setItem("previousSearches", JSON.stringify(pastSearches));
     
     geolocationAPI(city);
+    document.getElementById("hideme").classList.remove("visually-hidden"); 
   });
 }
 
@@ -69,13 +70,14 @@ formInput.addEventListener("submit", function(e) {
     return;
   }  
 
-  document.getElementById("hideme").classList.remove("visually-hidden"); 
+   
 
   pastSearches.push(srchVal); 
   localStorage.setItem("previousSearches", JSON.stringify(pastSearches));
 
   createBtn(srchVal);
   geolocationAPI(srchVal);
+  document.getElementById("hideme").classList.remove("visually-hidden");
   
 });
 
@@ -119,7 +121,7 @@ function weatherAPI(weatherURL, city){
     mainCont.append(cityName);
     
     let weatherNode = document.createElement("ul");
-    weatherNode.className = "list-group";
+    weatherNode.className = "list-group shadow";
   //  let newLi = createList(wData, liClass, tArray1);
   //   weatherNode.append(newLi);
     let temperature = document.createElement("li");
@@ -158,16 +160,20 @@ function forecast5Day(wData){
  
   for(let i = 1; i < wData.daily.length; i ++){
     let dayX = wData.daily[i];
-    let dayXList = document.createElement("ul");
-    dayXList.className = "card-body bg-info bg-gradient bg-opacity-50 border border-dark"
-    
+    let dayXCard = document.createElement("div");
+    dayXCard.className = "card-body bg-info bg-gradient bg-opacity-50 border border-dark cardItem shadow";
     let date = moment.unix(dayX.sunrise).format("DD-MM-YYYY");
   
-    dayXList.append(date);
-
+    dayXCard.append(date);
+    console.log(dayX);
     let icon = document.createElement("img");
     icon.setAttribute("src", rootURL + "/img/w/" + dayX.weather[0].icon + ".png");
-    dayXList.append(icon);
+    icon.setAttribute("alt", dayX.weather[0].description);
+    dayXCard.append(icon);
+    
+    let dayXList = document.createElement("ul");
+    dayXList.className = "text-center";
+    
    //let newLi = createList(dayX, liClass, tArray2);
    // dayxList.append(newLi);
     let temperature = document.createElement("li");
@@ -187,7 +193,8 @@ function forecast5Day(wData){
     humidity.className = "list-group-item rounded";
     dayXList.append(humidity);
 
-    weather.append(dayXList);
+    dayXCard.append(dayXList);
+    weather.append(dayXCard);
   }
 }
 

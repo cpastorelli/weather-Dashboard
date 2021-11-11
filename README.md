@@ -32,4 +32,4 @@ Project Link: (https://cpastorelli.github.io/weather-Dashboard/)
 - [Cloud Favicon](https://thenounproject.com/term/cloud/34853/)
 - [Sizing cards in bootstrap](https://coreui.io/docs/utilities/sizing/)
 - [Removing Class Name in JS](https://stackoverflow.com/questions/195951/how-can-i-change-an-elements-class-with-javascript)
-- [Background Image](https://unsplash.com/s/photos/weather)
+- [Photo by ] <a href="https://unsplash.com/@jared79?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Jared Bell</a> on <a href="https://unsplash.com/s/photos/panoramic-sky?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
